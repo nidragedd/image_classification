@@ -67,7 +67,7 @@ class Configuration(object):
     def get_hyperparameters(self, model):
         """
         Return hyperparameters written in configuration file as dict for model which has the given name
-        :param model: (string) the model name (should be either 'simple' or 'cnn')
+        :param model: (string) the model name (should be either 'simple' or 'convnet')
         :return: (dict) hyperparameters for this model
         """
         if model in self._config:

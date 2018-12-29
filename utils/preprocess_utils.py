@@ -11,7 +11,8 @@ from sklearn.preprocessing import LabelBinarizer
 
 def preprocess_scale_row_pixel(data):
     """
-    Scale the raw pixel intensities to the range [0, 1] (common preprocessing step)
+    Scale the raw pixel intensities to the range [0, 1] (common preprocessing step as most of neural networks expect
+    inputs to be in the range [0, 1] which reduces gradient or overflow errors than larger value ranges such as [0, 255])
     :param data: (array) image informations
     :return: (Numpy array) data transformed as np array
     """

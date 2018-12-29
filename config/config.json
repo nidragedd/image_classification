@@ -14,9 +14,13 @@
 			"loss_function": "binary_crossentropy"
 		}
 	},
-	"cnn": {
-		"integration": ["TOOLS-EUIN", "COMMON-EUIN"],
-		"preprod":  ["TOOLS-EUPP", "COMMON-EUPP"],
-		"prod":  ["TOOLS-EUPR", "COMMON-EUPR"]
+	"convnet": {
+		"model_name": "convolutional_nn",
+		"hyperparameters": {
+			"batch_size": 32,
+			"nb_epochs": 50,
+			"learning_rate": 0.01,
+			"loss_function": "binary_crossentropy"
+		}
 	}
 }

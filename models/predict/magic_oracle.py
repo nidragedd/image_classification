@@ -6,22 +6,28 @@ This is the main file used to make a prediction by using an already trained mode
 """
 import cv2
 from dataloader.dataset_mgmt import load_validation_dataset
+from models.train import trainer
 from utils import save_and_restore, preprocess_utils
 
 
-def do_magic(model_name, pgconf):
+def do_magic(pgconf, model_name):
     """
     Load an already trained model from disk and use it against all images found in validation directory (see value in
     external config.json configuration file) in order to make predictions.
     All images are then shown with an additional text displaying the prediction result.
-    :param model_name: (string) the model name (for the moment, only 'simple' is supported)
     :param pgconf: (object) this program configuration handler
+    :param model_name: (string) the model name (either 'simple' or 'convnet')
     """
     validation_dir = pgconf.get_validation_dir()
     load_dir = pgconf.get_output_dir()
 
     # Load validation dataset
-    original_data, data = load_validation_dataset(validation_dir)
+    resize_to = 32
+    flatten_images = True
+    if model_name == trainer.CNN_NAME:
+        resize_to = 64
+        flatten_images = False
+    original_data, data = load_validation_dataset(validation_dir, resize_to, flatten_images)
 
     # Preprocess steps (same as for training)
     data = preprocess_utils.preprocess_scale_row_pixel(data)
