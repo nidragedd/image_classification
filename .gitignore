@@ -1,0 +1,7 @@
+*/*.pyc
+*.pyc
+.idea/*
+**/__pycache__/
+training/*
+validation_test/*
+output/*

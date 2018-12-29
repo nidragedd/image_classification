@@ -1,0 +1,22 @@
+{
+	"main": {
+		"training_folder": "training",
+		"output_folder": "output",
+		"validation_test_folder": "validation_test",
+		"test_size": 0.25
+	},
+	"simple": {
+		"model_name": "simple_nn",
+		"hyperparameters": {
+			"batch_size": 32,
+			"nb_epochs": 70,
+			"learning_rate": 0.01,
+			"loss_function": "binary_crossentropy"
+		}
+	},
+	"cnn": {
+		"integration": ["TOOLS-EUIN", "COMMON-EUIN"],
+		"preprod":  ["TOOLS-EUPP", "COMMON-EUPP"],
+		"prod":  ["TOOLS-EUPR", "COMMON-EUPR"]
+	}
+}
