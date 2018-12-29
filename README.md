@@ -44,10 +44,14 @@ far, only simple one is implemented)
 
 ## Directory structure
 Some folders are (configured) and required:
-* ***training***: the folder for training image dataset (put images in subfolders named against categories). For example,
-create 2 folders named 'dog' and 'cat' to classify between both those animals
+* ***training***: the folder for training image dataset (put images in subfolders named against categories). For example:
+create 2 folders named 'dog' and 'cat' to classify between both those animals. I have been able to download the Kaggle
+dataset 'Pets vs Cats' [here](https://www.microsoft.com/en-us/download/details.aspx?id=54765).
+It is of course not added to this repository and contains more than 10K entries for each class.
 * ***output***: folder where trained models are stored or loaded, depending on what is required
-* ***validation_test***: folder where images are loaded to perform predictions
+* ***validation_test***: folder where images are loaded to perform predictions  
+All those directories are set in the external configuration config.json file. They are not added to this git repository
+so that you can create them and name them how you want to.
 
 ## External configuration file
 Those parameters plus some model hyperparameters are set in the external *<working_directory>*/config/config.json file.
