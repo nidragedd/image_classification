@@ -14,15 +14,14 @@ from models.predict import magic_oracle
 if __name__ == "__main__":
     # Mandatory arguments to run the program
     ap = argparse.ArgumentParser()
-    ap.add_argument("-m", "--model", required=True, help="Choice between [simple, convnet]")
+    ap.add_argument("-m", "--model", required=True, help="Name of the model, must be a valid choice")
     ap.add_argument("-o", "--objective", required=True, help="Choice between [train, predict]")
     ap.add_argument("-w", "--working-dir", required=False,
                     help="Use it to set another working directory than the one where this module is executed")
     args = vars(ap.parse_args())
 
-    if args["model"] != trainer.SIMPLE_NN_NAME and args["model"] != trainer.CNN_NAME:
-        raise Exception("Model must be a choice between either '{}' or '{}' value".
-                        format(trainer.SIMPLE_NN_NAME, trainer.CNN_NAME))
+    if args["model"] not in trainer.ALLOWED_MODELS_NAMES:
+        raise Exception("Model must be a choice between those values: {}".format(trainer.ALLOWED_MODELS_NAMES))
     if args["objective"] != "train" and args["objective"] != "predict":
         raise Exception("Objective must be a choice between either 'train' or 'predict' value")
 

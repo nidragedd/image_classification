@@ -61,9 +61,7 @@ def load_validation_dataset(validation_dir, resize_to, do_flatten=False):
     # Grab all image paths
     images_path_list = load_images_path(validation_dir)
     for image_path in images_path_list:
-        img_file_name = image_path.split(os.path.sep)[-1]
-        img_file_name = img_file_name[:img_file_name.rfind(".")].lower()
-        original_data.append((cv2.imread(image_path), img_file_name))
+        original_data.append(image_path)
         data.append(read_image_data(image_path, resize_to, do_flatten))
 
     logger.info("All validation images loaded")

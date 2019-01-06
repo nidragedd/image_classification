@@ -4,21 +4,22 @@ Created on 29/12/2018
 
 Contains the whole logic to build and train a model
 """
+import logging
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from keras.models import Sequential
-from keras.layers.core import Dense
-from keras.optimizers import SGD
-import logging
-
 from dataloader.dataset_mgmt import load_training_dataset
 from models.train import simple, convnet
 from utils import preprocess_utils, display_utils, save_and_restore
 
 logger = logging.getLogger()
 
+# Valid models below
 SIMPLE_NN_NAME = 'simple'
 CNN_NAME = 'convnet'
+PRETRAINED_VGG16 = 'vgg16'
+PRETRAINED_VGG19 = 'vgg19'
+PRETRAINED_RESNET = 'resnet'
+ALLOWED_MODELS_NAMES = [SIMPLE_NN_NAME, CNN_NAME, PRETRAINED_VGG16, PRETRAINED_VGG19, PRETRAINED_RESNET]
 
 
 def evaluate_training(lb, model, X_test, Y_test):
@@ -38,15 +39,30 @@ def evaluate_training(lb, model, X_test, Y_test):
 
 
 def do_training(pgconf, model_name):
+    """
+    Actually do the 'training' job. Sequentially, it will:
+    * load the dataset
+    * preprocess the data
+    * split the dataset in 2: training and test
+    * build a model and train it
+    * display results of this training (and save as image)
+    * save all elements related to the trained model in order to reuse them later without training
+    :param pgconf: (object) handler element to this program configuration
+    :param model_name: (string) the name of the model to train
+    """
     training_folder = pgconf.get_training_dir()
     save_folder = pgconf.get_output_dir()
     test_size = pgconf.get_test_size()
     nb_epochs = pgconf.get_nb_epochs(model_name)
 
+    # Default values/parameters accepted by VGG16, VGG19 or ResNet pre-trained models in Keras
+    input_shape = (224, 224)
+
     resize_to = 32
     flatten_images = True
     if model_name == CNN_NAME:
         resize_to = 64
+        input_shape = (resize_to, resize_to, 3)
         flatten_images = False
 
     # Load training dataset and associated labels (i.e the class for each image)
@@ -69,7 +85,6 @@ def do_training(pgconf, model_name):
         fit_history, model = simple.build_and_train_model(pgconf, len(lb.classes_), nb_epochs, X_train,
                                                           Y_train, X_test, Y_test)
     elif model_name == CNN_NAME:
-        input_shape = (64, 64, 3)
         fit_history, model = convnet.build_and_train_model(pgconf, len(lb.classes_), input_shape, nb_epochs,
                                                            X_train, Y_train, X_test, Y_test)
 

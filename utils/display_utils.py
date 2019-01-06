@@ -5,6 +5,7 @@ Created on 27/12/2018
 Utils package to perform some useful plotting/displaying operations
 """
 import os
+import cv2
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,3 +35,26 @@ def save_plot_history(save_folder, display_range, fit_history, model_type):
 
     save_file = os.path.join(save_folder, model_type + ".png")
     plt.savefig(save_file)
+
+
+def draw_picture_with_label_and_score(proba_class, proba_value, image_path):
+    """
+    From a given image path, load it with opencv library and put a description on it with the label and score
+    :param proba_class: (string) the label/class of the predicted value
+    :param proba_value: (float) probability that this image is part of the class found
+    :param image_path: (string) full path to the image on disk to load it
+    """
+    original_filename = image_path.split(os.path.sep)[-1]
+    original_filename = original_filename[:original_filename.rfind(".")].lower()
+
+    original_image = cv2.imread(image_path)
+
+    # Add determined class information on the image
+    text = "{}: {:.2f}%".format(proba_class, proba_value)
+    font_face = cv2.FONT_HERSHEY_DUPLEX
+    font_color = (0, 0, 0)
+    bottom_left_origin = (10, 30)
+    cv2.putText(original_image, text, bottom_left_origin, font_face, 1, font_color, 2)
+
+    # Display the original image (window title is the file name so that we can check if the prediction is accurate)
+    cv2.imshow(original_filename, original_image)
