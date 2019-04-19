@@ -11,7 +11,7 @@ import cv2
 import keras
 import numpy as np
 import logging
-from keras_applications import imagenet_utils
+from keras.applications import imagenet_utils
 from keras.applications import VGG16, VGG19, ResNet50
 from keras_preprocessing.image import load_img, img_to_array
 from dataloader.dataset_mgmt import load_validation_dataset, load_images_path
@@ -97,7 +97,6 @@ def use_pretrained_model(model_name, validation_dir):
     # Based on the model name, instantiate the appropriate pretrained network
     pretrained_model_app = PRETRAINED_MAPPING[model_name]
     model = pretrained_model_app(weights="imagenet")
-    print("backend: {}".format(keras.backend.image_data_format()))  # Used for debugging purpose (bug in 2.2.4 ?)
 
     # Load validation dataset, image per image
     images_path_list = load_images_path(validation_dir)
@@ -112,10 +111,7 @@ def use_pretrained_model(model_name, validation_dir):
         # method will throw an error
         x = np.expand_dims(x, axis=0)
 
-        print("backend: {}".format(keras.backend.image_data_format()))
-
         # Use the chosen preprocess method on the image
-        # Seems there is this bug to solve in 2.2.4 (https://stackoverflow.com/questions/52717181/keras-create-mobilenet-v2-model-attributeerror)
         x = imagenet_utils.preprocess_input(x)
 
         # Do the magic !
